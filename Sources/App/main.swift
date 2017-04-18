@@ -10,10 +10,6 @@ drop.get { req in
 
 drop.group("share") { share in
     share.get("proposal", String.self) { request, value in
-        guard let id: Int = value.regex(Config.Common.Regex.proposalID) else {
-            throw Abort.badRequest
-        }
-        
         if let json = try drop.client.get("https://data.swift.org/swift-evolution/proposals").json, let proposals = json.array {
             guard let index = proposals.flatMap({ $0.object?["id"] }).index(where: { $0.string == value }) else {
                 throw Abort.notFound
