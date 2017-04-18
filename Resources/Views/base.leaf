@@ -2,8 +2,13 @@
 <html>
 <head>
     #import("head")
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/app.css">
 </head>
     <body>
         #import("body")
     </body>
+    <footer>
+        #import("footer")
+    </footer>
 </html>
