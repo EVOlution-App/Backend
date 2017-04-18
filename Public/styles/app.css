@@ -14,38 +14,123 @@ body {
 	position: relative;
 }
 
-#droplet {
-    width: 50px;
-    display: inline-block;
-    margin-right: 12px;
-    float: left;
-}
-
-.message {
+div.message {
 	position: absolute;
-	width: 256px;
-    height: 64px;
+	width: 300px;
+    height: 300px;
 	text-align: center;
-	top: 50%;
+	top: 30%;
 	left: 50%;
-	margin-left: -128px;
-    margin-top: -32px;
+	margin-left: -150px;
+    margin-top: -150px;
     line-height: 0;
 }
 
-.message h1 {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    line-height: 64px;
-    float: left;
-    font-family: 'Quicksand';
-    font-weight: 500;
-    font-size: 36px;
+.message > img.logo {
+    width: 200px;
+    height: 200px;
 }
 
-.message img {
-    height: 100%;
-    display: inline-block;
-    float: left;
+a {
+    text-decoration: none;
+}
+
+.message > h1 {
+    font-weight: 200;
+    font-size: 40px;
+    color: #7b7777;
+    display: block;
+    margin-top: 50px;
+}
+
+.message > h1 > a:hover {
+    color: #234;
+}
+
+.message > h1 > a:visited {
+    color: #7b7777;
+}
+
+
+/* 
+######################################################### 
+######################################################### 
+*/
+
+div.content > div.proposal {
+    margin: 0 auto;
+    font-family: "HelveticaNeue-Thin";
+}
+
+a {
+    color: #333;
+}
+
+div.content > img.logo {
+    margin: 0 auto;
+    display: block;
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+}
+
+div.proposal > h2 {
+    font-weight: 200;
+}
+
+div.proposal > h1 {
+    font-weight: bold;
+}
+
+div.proposal > p {
+    font-size: 20px;
+}
+
+div.proposal a, footer a {
+    text-decoration: underline;
+}
+
+footer {
+    display: block;
+    text-align: center;
+    display: block;
+    margin-top: 50px;
+    padding-bottom: 50px;
+}
+footer > div.footer {
+    font-weight: lighter;
+    color: #AAA;
+    font-size: 12px;
+}
+
+div.footer span.author {
+    color: #888;
+    font-weight: bolder;
+}
+
+@media(max-width:414px) {
+    div.content > div.proposal {
+        width: 100%;
+        padding: 0px 20px;
+    }
+
+    div.proposal > h1 {
+        text-align: left;
+    }
+
+    div.proposal > p {
+        text-align: justify;
+    }
+}
+
+@media(min-width:415px) {
+    div.content > div.proposal {
+        width: 80%;
+    }
+}
+
+@media(min-width:737px) {
+    div.content > div.proposal {
+        width: 500px;
+    }
 }
