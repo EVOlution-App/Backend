@@ -31,7 +31,7 @@
             <h1 class="title">#(title)</h1>
             <p class="description">#(description)</p>
             <br/>
-            <a href="#()" data-uri="#(proposal)" onclick="clickHandler(this.dataset.uri)">Open proposal #(id) on Evolution App</a>
+            <a href="javascript:void(0);" data-uri="#(proposal)" onClick="javascript:clickHandler(this.dataset.uri);">Open proposal #(id) on Evolution App</a>
             <br/><br/><br/>
             <a href="#(link)" data-uri="#(link)" target="_blank">Open proposal #(id) on Github</a>
         </div> 
