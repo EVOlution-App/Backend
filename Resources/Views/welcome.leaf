@@ -2,15 +2,18 @@
 
 #export("head") {
 	<title>Swift Evolution</title>
-
+    
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
 	<link rel="stylesheet" href="/styles/app.css">
+
     <meta name="apple-itunes-app" content="app-id=1210898168">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 }
 
 #export("body") {
     <div class="message">
         <img class="logo" src="/images/logo-evolution.png"/>
         <h1><a href="http://app.swift-evolution.io">Evolution App</a></h1>
+        <a class="getintouch" href="mailto:feedback@swift-evolution.io?subject=Feedback%20from%20Evolution%20App">feedback@swift-evolution.io</a>
     </div>
 }

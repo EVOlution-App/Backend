@@ -15,15 +15,12 @@ body {
 }
 
 div.message {
-	position: absolute;
+	position: relative;
 	width: 300px;
     height: 300px;
 	text-align: center;
-	top: 30%;
-	left: 50%;
-	margin-left: -150px;
-    margin-top: -150px;
-    line-height: 0;
+    padding: 0;
+    margin: 30px auto;
 }
 
 .message > img.logo {
@@ -49,6 +46,15 @@ a {
 
 .message > h1 > a:visited {
     color: #7b7777;
+}
+
+.message > a.getintouch {
+    display: block;
+    margin-top: 20px;
+    color: #AAA;
+    height: 40px;
+    text-align: center;
+    width: 300px;
 }
 
 
