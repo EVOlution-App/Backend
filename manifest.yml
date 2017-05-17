@@ -1,0 +1,8 @@
+applications:
+- name: swift-evolution-backend
+  memory: 256M
+  instances: 1
+  random-route: true
+  disk_quota: 1024M
+  command: App
+  buildpack: swift_buildpack

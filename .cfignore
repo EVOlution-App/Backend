@@ -1,0 +1,4 @@
+.build/*
+docker-compose.yml
+*.xcodeproj/*
+.travis.yml
