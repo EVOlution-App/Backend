@@ -1,0 +1,45 @@
+{% extends "base.stencil" %}
+
+{% block head %}
+    <title>Evolution - Proposal - {{ title }}</title>
+
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-itunes-app" content="app-id=1210898168, app-argument={{ proposal }}">
+
+    <script src="/scripts/browser-deeplink.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        deeplink.setup({
+            iOS: {
+                appId: "1210898168",
+                appName: "swift-evolution",
+            },
+            fallback: false
+        });
+        function clickHandler(uri) {
+            deeplink.open(uri);
+            return false;
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <img class="logo" src="/images/logo-evolution.png"/>
+
+        <div class="proposal">
+            <h2>{{ id }}</h2>
+            <h1 class="title">{{ title }}</h1>
+            <p class="description">{{ description }}</p>
+            <br/>
+            <a href="javascript:void(0);" data-uri="{{ proposal }}" onClick="javascript:clickHandler(this.dataset.uri);">Open proposal {{ id }} on Evolution App</a>
+            <br/><br/><br/>
+            <a href="{{ link }}" data-uri="{{ link }}" target="_blank">Open proposal {{ id }} on Github</a>
+        </div> 
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div class="footer">
+        Copyright &copy; 2017 <span class="author">Thiago Holanda</span> (<a href="mailto:thiago@swift-evolution.io">thiago@swift-evolution.io</a>).<br/><br/>Swift and the Swift logo are trademarks of Apple Inc., <br/>registered in the U.S. and other countries.
+    </div>
+{% endblock %}
