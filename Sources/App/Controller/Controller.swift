@@ -42,47 +42,34 @@ public class Controller {
                 next()
             }
             
-            guard let proposalID = request.parameters["proposal"] else {
-                try response.status(.notFound).end()
-                return
-            }
-            
             guard
-                let request = URLSession.shared.request("https://data.swift.org/swift-evolution/proposals"),
-                let data    = request.data,
-                request.error == nil else {
-                    try response.status(.notFound).end()
-                    return
-            }
-            
-            guard let proposals = JSON(data: data).array else {
-                return
-            }
-            
-            guard
-                let index       = proposals.flatMap({ $0["id"] }).index(where: { $0.string == proposalID }),
-                let proposal    = proposals[index].dictionary else {
-                    try response.status(.notFound).end()
-                    return
-            }
-            
-            guard
-                let title   = proposal["title"]?.string,
-                let link    = proposal["link"]?.string,
-                let summary = proposal["summary"]?.string
+                let proposalID = request.parameters["proposal"]
                 else {
+                    try response.status(.badRequest).end()
                     return
             }
             
-            let context = [
-                "id"            : proposalID.trim(),
-                "title"         : title.trim(),
-                "description"   : summary.trim(),
-                "proposal"      : "evo://proposal/\(proposalID.trim())",
-                "link"          : "https://github.com/apple/swift-evolution/blob/master/proposals/\(link)"
-            ]
-
-            try response.render("share_index.stencil", context: context)
+            guard
+                let res = URLSession.shared.request("https://data.swift.org/swift-evolution/proposals"),
+                let data = res.data,
+                let proposals = data.proposals(),
+                res.error == nil else {
+                    try response.status(.notFound).end()
+                    return
+            }
+            
+            guard
+                let index = proposals.map({ $0.id }).index(where: { $0 == proposalID })
+                else {
+                    try response.status(.notFound).end()
+                    return
+            }
+            
+            let proposal = proposals[index]
+            
+            try response.render("share_index.stencil",
+                                context: proposal.serialize())
         }
     }
 }
+
