@@ -21,7 +21,7 @@
         <div class="proposal">
             <h2>{{ id }}</h2>
             <h1 class="title">{{ title }}</h1>
-            <p class="description">{{ description }}</p>
+            <p class="description">{{ summary }}</p>
             <br/>
             Open proposal {{ id }} on <a href="javascript:void(0);" data-uri="{{ proposal }}" onClick="javascript:clickHandler(this.dataset.uri);">Evolution App</a> or <a href="{{ link }}" data-uri="{{ link }}" target="_blank">Github</a>
             
