@@ -5,6 +5,22 @@ public typealias ResponseBlock = (data: ResponseData?, response: URLResponse?, e
 
 extension URLSession {
     
+    /**
+     Request data from URL synchronously.
+     
+     _Example:_
+     ```
+     guard
+        let res = URLSession.shared.request("https://data.swift.org/swift-evolution/proposals"),
+        let data = res.data,
+        let proposals = data.proposals(),
+        res.error == nil else {
+            return
+     }
+     ```
+    - parameter url: url target
+    - returns: (data: _ResponseData?_, response: _URLResponse?_, error: _Error?_)
+    */
     func request(_ url: String) -> ResponseBlock? {
         guard let url = URL(string: url)
             else {
