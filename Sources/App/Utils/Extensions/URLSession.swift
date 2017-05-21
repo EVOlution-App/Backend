@@ -1,15 +1,17 @@
 import Foundation
 
+public typealias ResponseData = Data
+public typealias ResponseBlock = (data: ResponseData?, response: URLResponse?, error: Error?)
+
 extension URLSession {
-    public typealias ResponseBlock = (data: Data?, response: URLResponse?, error: Error?)
     
-    open func request(_ url: String) -> ResponseBlock? {
+    func request(_ url: String) -> ResponseBlock? {
         guard let url = URL(string: url)
             else {
                 return nil
         }
         
-        var data: Data?
+        var data: ResponseData?
         var response: URLResponse?
         var error: Error?
         
