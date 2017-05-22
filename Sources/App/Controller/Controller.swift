@@ -59,13 +59,11 @@ public class Controller {
             }
             
             guard
-                let index = proposals.map({ $0.id }).index(where: { $0 == proposalID })
+                let proposal = proposals.find(id: proposalID)
                 else {
                     try response.status(.notFound).end()
                     return
             }
-            
-            let proposal = proposals[index]
             
             try response.render("share_index.stencil",
                                 context: proposal.serialize())
