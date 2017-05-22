@@ -23,6 +23,16 @@ struct Config {
         public var url: String {
             return configuration.url
         }
+        
+        struct Resources {
+            static var templates: String {
+                return  "./Resources/Templates/"
+            }
+            
+            static var staticFiles: String {
+                return "./Resources/public/"
+            }
+        }
     }
     
     struct Common {
