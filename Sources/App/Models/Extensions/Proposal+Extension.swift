@@ -7,7 +7,7 @@ extension Array where Iterator.Element == Proposal {
     /// - parameter id: identification
     /// - returns: proposal object or nil
     func find(id: String) -> Proposal? {
-        guard let index = self.map({ $0.id }).index(where: { $0 == id })
+        guard let index = self.lazy.map({ $0.id }).index(where: { $0 == id })
             else {
                 return nil
         }
