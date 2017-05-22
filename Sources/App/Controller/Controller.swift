@@ -17,12 +17,11 @@ public class Controller {
         router = Router()
         
         // Configure Template and source folder
-        router.viewsPath = "./Resources/Templates/"
+        router.viewsPath = Config.Server.Resources.templates
         router.add(templateEngine: StencilTemplateEngine())
-        
-        
+
         // Serve static content from "public"
-        router.all("/", middleware: StaticFileServer(path: "./Resources/public/"))
+        router.all("/", middleware: StaticFileServer(path: Config.Server.Resources.staticFiles))
         
         
         // MARK: /
@@ -32,7 +31,8 @@ public class Controller {
                 next()
             }
 
-            try response.render("index.stencil", context: ["share": "it works"]).end()
+            try response.render(Config.Common.Templates.landing.rawValue,
+                                context: [:]).end()
         }
         
         // MARK: /share/proposal/:proposal
@@ -50,11 +50,9 @@ public class Controller {
             }
             
             guard
-                let res = URLSession.shared.request("https://data.swift.org/swift-evolution/proposals"),
-                let data = res.data,
-                let proposals = data.proposals(),
-                res.error == nil else {
-                    try response.status(.notFound).end()
+                let proposals = Service.getProposals()
+                else {
+                    try response.status(.internalServerError).end()
                     return
             }
             
@@ -65,7 +63,7 @@ public class Controller {
                     return
             }
             
-            try response.render("share_index.stencil",
+            try response.render(Config.Common.Templates.shareProposal.rawValue,
                                 context: proposal.serialize())
         }
     }
