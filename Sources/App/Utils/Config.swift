@@ -1,6 +1,12 @@
 import Configuration
 
+/**
+ Constant settings to use throughout the application
+ */
 struct Config {
+    /**
+     On Server struct there are configurations that will be used only on server instance
+     */
     struct Server {
         private let configuration: ConfigurationManager
         
