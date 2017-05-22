@@ -36,6 +36,17 @@ struct Config {
     }
     
     struct Common {
+        struct URLBase {
+            static var proposals: String {
+                return "https://data.swift.org/swift-evolution/proposals"
+            }
+        }
+        
+        enum Templates: String {
+            case landing = "index.stencil"
+            case shareProposal = "share_index.stencil"
+        }
+        
         struct Proposal {
             struct Regex {
                 static var proposalID: String {
