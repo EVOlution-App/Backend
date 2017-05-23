@@ -1,4 +1,5 @@
 import Foundation
+import KituraRequest
 
 struct Service {
 
@@ -8,8 +9,9 @@ struct Service {
      - returns: proposals list or nil
      */
     static func getProposals() -> [Proposal]? {
+        let response = KituraRequest.get(Config.Common.URLBase.proposals)
+
         guard
-            let response = URLSession.shared.request(Config.Common.URLBase.proposals),
             let data = response.data,
             let proposals = data.proposals(),
             response.error == nil else {
