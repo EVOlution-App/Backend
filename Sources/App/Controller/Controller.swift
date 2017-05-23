@@ -1,6 +1,5 @@
 import Foundation
 import Kitura
-import KituraRequest
 
 import SwiftyJSON
 import LoggerAPI
