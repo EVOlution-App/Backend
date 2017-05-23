@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 
 public typealias ResponseData = Data
 public typealias ResponseBlock = (data: ResponseData?, response: URLResponse?, error: Error?)
