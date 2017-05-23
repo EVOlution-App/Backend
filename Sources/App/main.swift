@@ -2,7 +2,6 @@ import Foundation
 import Kitura
 import LoggerAPI
 import HeliumLogger
-import Controller
 
 // HeliumLogger disables all buffering on stdout
 HeliumLogger.use(LoggerMessageType.info)
