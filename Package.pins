@@ -50,6 +50,12 @@
       "version": "1.7.6"
     },
     {
+      "package": "KituraRequest",
+      "reason": null,
+      "repositoryURL": "https://github.com/IBM-Swift/Kitura-Request.git",
+      "version": "0.8.1"
+    },
+    {
       "package": "KituraStencil",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Kitura-StencilTemplateEngine.git",
