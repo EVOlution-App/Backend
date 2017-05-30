@@ -10,9 +10,6 @@ final class ProposalsController {
     
     public static func get(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         Log.debug("GET - /share/proposal/:proposal route handler...")
-        defer {
-            next()
-        }
         
         guard
             let proposalID = request.parameters["proposal"]
