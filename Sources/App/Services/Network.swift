@@ -1,23 +1,33 @@
 import Foundation
-import KituraRequest
 
 struct Service {
 
+    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: [Proposal]?) -> Swift.Void
+    
     /**
      Request all proposals from Swift Evolution from data.swift.org
      
      - returns: proposals list or nil
      */
-    static func getProposals() -> [Proposal]? {
-        let response = KituraRequest.get(Config.Common.URLBase.proposals)
+    static func getProposals(_ handler: @escaping CompletionProposalsHandler) {
+        let session = URLSession(configuration: .ephemeral)
 
-        guard
-            let data = response.data,
-            let proposals = data.proposals(),
-            response.error == nil else {
-                return nil
+        if let url = URL(string: Config.Common.URLBase.proposals) {
+            let datatask = session.dataTask(with: url) { (data, _, error) in
+                guard
+                    let data = data,
+                    let proposals = data.proposals(),
+                    error == nil
+                    else {
+                        handler(error, nil)
+                        return
+                }
+
+                handler(nil, proposals)
+            }
+                
+            datatask.resume()
         }
-        
-        return proposals
+
     }
 }
