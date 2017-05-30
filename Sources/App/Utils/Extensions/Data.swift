@@ -1,7 +1,7 @@
 import Foundation
 import SwiftyJSON
 
-extension ResponseData {
+extension Data {
     public func proposals() -> [Proposal]? {
         guard let list = JSON(data: self).array else {
             return nil
