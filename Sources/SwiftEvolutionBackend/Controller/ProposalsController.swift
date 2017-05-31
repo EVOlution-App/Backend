@@ -3,12 +3,12 @@ import Kitura
 import LoggerAPI
 import KituraStencil
 
-final class ProposalsController {
-    public static func list(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+extension Controller {
+    func list(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         
     }
     
-    public static func get(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+    func getProposal(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         Log.debug("GET - /share/proposal/:proposal route handler...")
         
         guard

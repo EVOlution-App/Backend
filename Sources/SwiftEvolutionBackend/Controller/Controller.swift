@@ -1,6 +1,5 @@
 import Foundation
 import Kitura
-
 import SwiftyJSON
 import LoggerAPI
 import Configuration
@@ -23,10 +22,10 @@ public class Controller {
         router.all("/", middleware: StaticFileServer(path: Config.Server.Resources.staticFiles))
         
         // MARK: /
-        router.get("/", handler: LandingController.index)
+        router.get("/", handler: getLandingPage)
         
         // MARK: /share/proposal/:proposal
-        router.get("/share/proposal/:proposal", handler: ProposalsController.get)
+        router.get("/share/proposal/:proposal", handler: getProposal)
     }
 }
 
