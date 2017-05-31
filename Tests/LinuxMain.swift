@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import ControllerTests
+@testable import SwiftEvolutionBackendTests
 
 XCTMain([
     testCase(RouteTests.allTests),

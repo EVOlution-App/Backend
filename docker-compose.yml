@@ -4,4 +4,4 @@ app:
     - "8080:8080"
   volumes:
     - .:/root/App
-  command: bash -c "cd /root/App && swift package clean && swift build && swift test && ./.build/debug/App"
+  command: bash -c "cd /root/App && swift package clean && swift build && swift test && ./.build/debug/Server"

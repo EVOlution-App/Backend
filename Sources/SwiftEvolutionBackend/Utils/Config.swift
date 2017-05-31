@@ -3,14 +3,14 @@ import Configuration
 /**
  Constant settings to use throughout the application
  */
-struct Config {
+public struct Config {
     /**
      On Server struct there are configurations that will be used only on server instance
      */
-    struct Server {
+    public struct Server {
         private let configuration: ConfigurationManager
         
-        static let shared = Server()
+        static public let shared = Server()
         
         init() {
             configuration = ConfigurationManager().load(.environmentVariables)
@@ -35,7 +35,7 @@ struct Config {
         }
     }
     
-    struct Common {
+    public struct Common {
         struct URLBase {
             static var proposals: String {
                 return "https://data.swift.org/swift-evolution/proposals"

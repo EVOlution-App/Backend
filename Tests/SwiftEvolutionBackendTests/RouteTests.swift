@@ -28,31 +28,25 @@ import Dispatch
 import HeliumLogger
 import SwiftyJSON
 
-//import KituraStarterRouter
-@testable import Controller
+@testable import SwiftEvolutionBackend
 
 class RouteTests: XCTestCase {
 
   static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
     return [
       ("testGetStatic", testGetStatic),
-      ("testGetHello", testGetHello),
-      ("testPostHello", testPostHello),
-      ("testGetJSON", testGetJSON)
+      ("testGetProposal", testGetProposal)
     ]
   }
 
   private let controller = Controller()
-  private let queue = DispatchQueue(label: "Kitura runloop", qos: .userInitiated, attributes: .concurrent)
 
   override func setUp() {
     super.setUp()
     HeliumLogger.use()
+    
     Kitura.addHTTPServer(onPort: 8080, with: controller.router)
-
-    queue.async {
-      Kitura.start()
-    }
+    Kitura.start()
 
     print("------------------------------")
     print("------------New Test----------")
@@ -66,13 +60,15 @@ class RouteTests: XCTestCase {
 
   func testGetStatic() {
 
-    let printExpectation = expectation(description: "The /route will serve static HTML content.")
+    let printExpectation = expectation(description: "The / route will serve static HTML content.")
 
     URLRequest(forTestWithMethod: "GET")?
-    .sendForTestingWithKitura { data in
+    .sendForTestingWithKitura { data, statusCode in
       if let getResult = String(data: data, encoding: String.Encoding.utf8){
         print("GET to / endpoint returned: ", getResult)
-        XCTAssertTrue(getResult.contains("<h1 class=\"titleText\">IBM Kitura Starter Bluemix</h1>"))
+        XCTAssertEqual(statusCode, 200)
+        XCTAssertTrue(getResult.contains("<html>"))
+        XCTAssertTrue(getResult.contains("</html>"))
       } else {
         XCTFail("Return value from / was nil!")
       }
@@ -83,58 +79,19 @@ class RouteTests: XCTestCase {
     waitForExpectations(timeout: 10.0, handler: nil)
   }
 
-  func testGetHello() {
+  func testGetProposal() {
 
-    let printExpectation = expectation(description: "The /hello endpoint will return a String to the GET request.")
+    let printExpectation = expectation(description: "The /share/proposal/:proposal endpoint will return a JSON object to the GET request")
 
-    URLRequest(forTestWithMethod: "GET", route: "hello")?
-    .sendForTestingWithKitura { data in
+    URLRequest(forTestWithMethod: "GET", route: "share/proposal/SE-0001")?
+    .sendForTestingWithKitura { data, statusCode in
       if let getResult = String(data: data, encoding: String.Encoding.utf8) {
-        print("GET to /hello endpoint returned: ", getResult)
-        XCTAssertTrue(getResult.contains("Hello from swift-evolution-backend!"))
+        print("GET to /share/proposal/:proposal endpoint returned: ", getResult)
+        XCTAssertEqual(statusCode, 200)
+        XCTAssertTrue(getResult.contains("SE-0001"))
       } else {
-        XCTFail("Return value from /hello GET was nil!")
+        XCTFail("Return value from /share/proposal/:proposal was nil!")
       }
-
-      printExpectation.fulfill()
-    }
-
-    waitForExpectations(timeout: 10.0, handler: nil)
-  }
-
-  func testPostHello() {
-
-    let printExpectation = expectation(description: "The /hello endpoint will return a String containing the data sent in the POST body.")
-
-    URLRequest(forTestWithMethod: "POST", route: "hello", body: "from the other side".data(using: .utf8))?
-    .sendForTestingWithKitura { data in
-      if let postResult = String(data: data, encoding: String.Encoding.utf8){
-        print("POST to /hello endpoint returned: ", postResult)
-        XCTAssertTrue(postResult.contains("Hello from the other side, from swift-evolution-backend!"))
-      } else {
-        XCTFail("Return value from /hello POST was nil!")
-      }
-
-      printExpectation.fulfill()
-    }
-
-    waitForExpectations(timeout: 10.0, handler: nil)
-  }
-
-  func testGetJSON() {
-
-    let printExpectation = expectation(description: "The /json endpoint will return a JSON object to the GET request")
-
-    URLRequest(forTestWithMethod: "GET", route: "json")?
-    .sendForTestingWithKitura { data in
-      let getJSONResult = JSON(data: data)
-      print("GET to /hello endpoint returned: ", getJSONResult)
-      XCTAssertNotNil(getJSONResult, "GetHello string is nil")
-      XCTAssertEqual(getJSONResult["framework"].string, "Kitura")
-      XCTAssertEqual(getJSONResult["applicationName"].string, "swift-evolution-backend")
-      XCTAssertEqual(getJSONResult["location"].string, "Austin, Texas")
-      XCTAssertEqual(getJSONResult["company"].string, "IBM")
-      XCTAssertEqual(getJSONResult["organization"].string, "Swift @ IBM")
       printExpectation.fulfill()
     }
 
@@ -160,7 +117,7 @@ private extension URLRequest {
     }
   }
 
-  func sendForTestingWithKitura(fn: @escaping (Data) -> Void) {
+  func sendForTestingWithKitura(fn: @escaping (Data, Int) -> Void) {
 
     guard let method = httpMethod, var path = url?.path, let headers = allHTTPHeaderFields else {
       XCTFail("Invalid request params")
@@ -179,7 +136,7 @@ private extension URLRequest {
         do {
           var body = Data()
           try resp.readAllData(into: &body)
-          fn(body)
+          fn(body, resp.statusCode.rawValue)
         } catch {
           print("Bad JSON document received from swift-evolution-backend.")
         }

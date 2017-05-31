@@ -17,7 +17,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-evolution-backend",
+    name: "SwiftEvolutionBackend",
+    targets: [
+      Target(name: "Server", dependencies: [.Target(name: "SwiftEvolutionBackend")])
+    ],
     dependencies: [
         .Package(url: "https://github.com/IBM-Swift/CloudConfiguration", majorVersion: 2),
         .Package(url: "https://github.com/IBM-Swift/HeliumLogger.git", majorVersion: 1, minor: 7),

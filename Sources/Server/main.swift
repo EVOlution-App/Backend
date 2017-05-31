@@ -2,6 +2,7 @@ import Foundation
 import Kitura
 import LoggerAPI
 import HeliumLogger
+import SwiftEvolutionBackend
 
 // HeliumLogger disables all buffering on stdout
 HeliumLogger.use(LoggerMessageType.info)
