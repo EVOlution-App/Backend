@@ -50,16 +50,10 @@
       "version": "1.7.6"
     },
     {
-      "package": "KituraRequest",
-      "reason": null,
-      "repositoryURL": "https://github.com/IBM-Swift/Kitura-Request.git",
-      "version": "0.8.1"
-    },
-    {
       "package": "KituraStencil",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/Kitura-StencilTemplateEngine.git",
-      "version": "1.8.0"
+      "version": "1.8.1"
     },
     {
       "package": "LoggerAPI",
@@ -77,13 +71,13 @@
       "package": "SSLService",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/BlueSSLService.git",
-      "version": "0.12.33"
+      "version": "0.12.35"
     },
     {
       "package": "Socket",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/BlueSocket.git",
-      "version": "0.12.48"
+      "version": "0.12.50"
     },
     {
       "package": "Spectre",
@@ -95,7 +89,7 @@
       "package": "Stencil",
       "reason": null,
       "repositoryURL": "https://github.com/kylef/Stencil",
-      "version": "0.8.0"
+      "version": "0.9.0"
     },
     {
       "package": "SwiftyJSON",
