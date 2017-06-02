@@ -34,7 +34,7 @@ extension Controller {
                     return
             }
             
-            _ = try? response.render(Config.Common.Templates.shareProposal.rawValue,
+            _ = try? response.render(Config.shared.templateShareProposal,
                                      context: proposal.serialize())
             next()
         }

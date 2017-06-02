@@ -19,7 +19,7 @@ public struct Proposal {
         
         self.id      = id
         self.title   = title
-        self.link    = Config.Common.Proposal.URLBase.proposal(link)
+        self.link    = Config.shared.proposalBaseURL(link)
         self.summary = summary
     }
     
@@ -30,7 +30,7 @@ public struct Proposal {
         result["title"]     = self.title
         result["link"]      = self.link
         result["summary"]   = self.summary
-        result["proposal"]  = Config.Common.Proposal.Deeplink.proposal(self.id)
+        result["proposal"]  = Config.shared.proposalDeepLink(self.id)
         
         return result
     }

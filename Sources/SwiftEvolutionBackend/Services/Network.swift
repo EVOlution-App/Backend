@@ -12,7 +12,7 @@ struct Service {
     static func getProposals(_ handler: @escaping CompletionProposalsHandler) {
         let session = URLSession(configuration: .default)
 
-        if let url = URL(string: Config.Common.URLBase.proposals) {
+        if let url = URL(string: Config.shared.rawProposalsBaseURL) {
             let datatask = session.dataTask(with: url) { (data, _, error) in
                 guard
                     let data = data,
