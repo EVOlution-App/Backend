@@ -10,6 +10,9 @@ import KituraStencil
 public class Controller {
     public let router: Router
     
+    public var proposals = [Proposal]()
+    public var proposalContent = [String: String]()
+    
     public init() {
         // All web apps need a Router instance to define routes
         router = Router()

@@ -5,6 +5,7 @@ public struct Proposal {
     var id: String
     var title: String
     var link: String
+    var markdownLink: String
     var summary: String
     
     init?(_ dictionary: [String : JSON]) {
@@ -17,10 +18,11 @@ public struct Proposal {
                 return nil
         }
         
-        self.id      = id
-        self.title   = title
-        self.link    = Config.shared.proposalBaseURL(link)
-        self.summary = summary
+        self.id           = id
+        self.title        = title
+        self.link         = Config.shared.proposalBaseURL(link)
+        self.markdownLink = Config.shared.markdownBaseURL(link)
+        self.summary      = summary
     }
     
     func serialize() -> [String: Any] {

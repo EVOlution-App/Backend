@@ -18,25 +18,46 @@ extension Controller {
                 return
         }
         
-        Service.getProposals { [unowned response, next] (error, proposals) in
-            guard
-                let proposals = proposals,
-                error == nil
-                else {
-                    try? response.status(.internalServerError).end()
-                    return
-            }
-            
-            guard
-                let proposal = proposals.find(id: proposalID)
-                else {
-                    try? response.status(.notFound).end()
-                    return
+        let findProposal = { (response: RouterResponse, next: @escaping () -> Void) in
+            guard let proposal = self.proposals.find(id: proposalID) else {
+                try? response.status(.notFound).end()
+                return
             }
             
             _ = try? response.render(Config.shared.templateShareProposal,
                                      context: proposal.serialize())
-            next()
+
+            // Cache proposal content
+            if self.proposalContent[proposal.markdownLink] == nil {
+
+                Service.getProposalText(proposal.markdownLink) { [unowned response, next] (error, proposalText) in
+                    
+                    guard let proposalText = proposalText, error == nil else {
+                        try? response.status(.internalServerError).end()
+                        return
+                    }
+                    self.proposalContent[proposal.markdownLink] = proposalText
+                    next()
+                }
+            } else {
+                next()
+            }
+            
+        }
+        
+        // Use cached proposals if available
+        if self.proposals.count > 0 {
+            findProposal(response, next)
+        } else {
+        
+            Service.getProposals { [unowned response, next] (error, proposals) in
+                guard let proposals = proposals, error == nil else {
+                    try? response.status(.internalServerError).end()
+                    return
+                }
+                self.proposals = proposals
+                findProposal(response, next)
+            }
         }
     }
     

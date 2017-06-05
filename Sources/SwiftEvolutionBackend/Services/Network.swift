@@ -30,4 +30,24 @@ struct Service {
         }
 
     }
+    
+    static func getProposalText(_ proposalLink: String, handler: @escaping (_ error: Error?, _ proposalText: String?) -> Swift.Void) {
+        
+        let session = URLSession(configuration: .default)
+        
+        if let url = URL(string: proposalLink) {
+            
+            let datatask = session.dataTask(with: url) { (data, _, error) in
+                
+                guard let data = data, let proposalText = data.proposalText(), error == nil else {
+                    handler(error, nil)
+                    return
+                }
+                print("TEXT: \(proposalText)")
+                handler(nil, proposalText)
+            }
+            datatask.resume()
+        }
+        
+    }
 }
