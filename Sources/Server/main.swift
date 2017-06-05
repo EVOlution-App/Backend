@@ -8,9 +8,9 @@ import SwiftEvolutionBackend
 HeliumLogger.use(LoggerMessageType.info)
 
 let controller = Controller()
-Log.info("Server will be started on '\(Config.Server.shared.url)'.")
+Log.info("Server will be started on '\(Config.shared.url)'.")
 
-Kitura.addHTTPServer(onPort: Config.Server.shared.port, with: controller.router)
+Kitura.addHTTPServer(onPort: Config.shared.port, with: controller.router)
 
 // Start server
 Kitura.run()

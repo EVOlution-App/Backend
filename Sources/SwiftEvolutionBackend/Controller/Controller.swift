@@ -15,11 +15,11 @@ public class Controller {
         router = Router()
         
         // Configure Template and source folder
-        router.viewsPath = Config.Server.Resources.templates
+        router.viewsPath = Config.shared.resourceTemplates
         router.add(templateEngine: StencilTemplateEngine())
 
         // Serve static content from "public"
-        router.all("/", middleware: StaticFileServer(path: Config.Server.Resources.staticFiles))
+        router.all("/", middleware: StaticFileServer(path: Config.shared.staticResourceFiles))
         
         // MARK: /
         router.get("/", handler: getLandingPage)

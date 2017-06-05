@@ -1,0 +1,25 @@
+{
+	"serverResources" : {
+		"templates" : "./Resources/Templates/",
+		"staticFiles" : "./Resources/public/"
+	},
+	"urlBase" : {
+		"proposals" : "https://data.swift.org/swift-evolution/proposals"
+	},
+	"templates" : {
+		"landing" : "index.stencil",
+		"shareProposal" : "share_index.stencil"
+	},
+	"regex" : {
+		"proposalID" : "SE-([0-9]+)",
+		"bugID" : "SR-([0-9]+)"
+	},
+	"urlBase" : {
+		"markdown" : "https://raw.githubusercontent.com/apple/swift-evolution/master/proposals/",
+		"proposal" : "https://github.com/apple/swift-evolution/blob/master/proposals/"
+	},
+	"deepLink" : {
+		"proposal" : "evo://proposal/",
+		"profile" : "evo://username/"
+	}
+}

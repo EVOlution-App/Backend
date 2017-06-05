@@ -1,82 +1,90 @@
+import CloudFoundryConfig
 import Configuration
 
 /**
  Constant settings to use throughout the application
  */
 public struct Config {
-    /**
-     On Server struct there are configurations that will be used only on server instance
-     */
-    public struct Server {
-        private let configuration: ConfigurationManager
-        
-        static public let shared = Server()
-        
-        init() {
-            configuration = ConfigurationManager().load(.environmentVariables)
-        }
-        
-        public var port: Int {
-            return configuration.port
-        }
-        
-        public var url: String {
-            return configuration.url
-        }
-        
-        struct Resources {
-            static var templates: String {
-                return  "./Resources/Templates/"
-            }
-            
-            static var staticFiles: String {
-                return "./Resources/public/"
-            }
-        }
+    
+    /// Enum containing all json path keys for properties file
+    private enum Keys: String {
+        case resourceTemplates = "serverResources:templates"
+        case staticResourceFiles = "serverResources:staticFiles"
+        case templateLanding = "templates:landing"
+        case templateShareProposal = "templates:shareProposal"
+        case rawProposalsBaseURL = "common:urlBase:proposals"
+        case markdownBaseURL = "urlBase:markdown"
+        case proposalBaseURL = "urlBase:proposal"
+        case proposalDeepLink = "deepLink:proposal"
+        case profileDeepLink = "deepLink:profile"
+        case proposalRegex = "regex:proposalID"
+        case bugRegex = "regex:bugID"
+    }
+
+    private let configuration: ConfigurationManager
+    private let propertiesFile = "properties.json"
+
+    static public let shared = Config()
+
+    init() {
+        configuration = ConfigurationManager()
+            .load(file: "../../\(propertiesFile)")
+            .load(file: propertiesFile, relativeFrom: .pwd)
+            .load(.environmentVariables)
+    }
+
+    public var port: Int {
+        return configuration.port
+    }
+
+    public var url: String {
+        return configuration.url
     }
     
-    public struct Common {
-        struct URLBase {
-            static var proposals: String {
-                return "https://data.swift.org/swift-evolution/proposals"
-            }
-        }
-        
-        enum Templates: String {
-            case landing = "index.stencil"
-            case shareProposal = "share_index.stencil"
-        }
-        
-        struct Proposal {
-            struct Regex {
-                static var proposalID: String {
-                    return "SE-([0-9]+)"
-                }
-                
-                static var bugID: String {
-                    return "SR-([0-9]+)"
-                }
-            }
-            
-            struct URLBase {
-                static func markdown(_ link: String) -> String {
-                    return "https://raw.githubusercontent.com/apple/swift-evolution/master/proposals/\(link)"
-                }
-                
-                static func proposal(_ link: String) -> String {
-                    return "https://github.com/apple/swift-evolution/blob/master/proposals/\(link)"
-                }
-            }
-            
-            struct Deeplink {
-                static func proposal(_ id: String) -> String {
-                    return "evo://proposal/\(id)"
-                }
-                
-                static func profile(_ username: String) -> String {
-                    return "evo://username/\(username)"
-                }
-            }
-        }
+    // MARK: Templating Values
+    
+    var resourceTemplates: String {
+        return configuration[Keys.resourceTemplates.rawValue] as? String ?? "./Resources/Templates/"
     }
+    var staticResourceFiles: String {
+        return configuration[Keys.staticResourceFiles.rawValue] as? String ?? "./Resources/public/"
+    }
+    var templateLanding: String {
+        return configuration[Keys.templateLanding.rawValue] as? String ?? "index.stencil"
+    }
+    var templateShareProposal: String {
+        return configuration[Keys.templateShareProposal.rawValue] as? String ?? "share_index.stencil"
+    }
+    
+    // MARK: URL and Link Reference Values
+    
+    var rawProposalsBaseURL: String {
+        return configuration[Keys.rawProposalsBaseURL.rawValue] as? String ?? "https://data.swift.org/swift-evolution/proposals"
+    }
+    func markdownBaseURL(_ link: String) -> String {
+        let base = configuration[Keys.markdownBaseURL.rawValue] as? String ?? "https://raw.githubusercontent.com/apple/swift-evolution/master/proposals/"
+        return base + link
+    }
+    func proposalBaseURL(_ link: String) -> String {
+        let base = configuration[Keys.proposalBaseURL.rawValue] as? String ?? "https://github.com/apple/swift-evolution/blob/master/proposals/"
+        return base + link
+    }
+    func proposalDeepLink(_ id: String) -> String {
+        let base = configuration[Keys.proposalDeepLink.rawValue] as? String ?? "evo://proposal/"
+        return base + id
+    }
+    func profileDeepLink(_ username: String) -> String {
+        let base = configuration[Keys.profileDeepLink.rawValue] as? String ?? "evo://username/"
+        return base + username
+    }
+    
+    // MARK: Common Utility Values
+    
+    var proposalRegex: String {
+        return configuration[Keys.proposalRegex.rawValue] as? String ?? "SE-([0-9]+)"
+    }
+    var bugRegex: String {
+        return configuration[Keys.bugRegex.rawValue] as? String ?? "SR-([0-9]+)"
+    }
+    
 }
