@@ -1,9 +1,9 @@
 import Foundation
 
-struct Service {
+class Service {
 
-    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: [Proposal]?) -> Swift.Void
-    public typealias CompletionProposalHandler = (_ error: Error?, _ proposalText: String?) -> Swift.Void
+    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: [Proposal]?) -> Void
+    public typealias CompletionProposalHandler = (_ error: Error?, _ proposalText: String?) -> Void
     
     /**
      Request all proposals from Swift Evolution from data.swift.org
