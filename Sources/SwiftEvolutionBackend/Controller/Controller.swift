@@ -12,6 +12,8 @@ public class Controller {
     
     public var proposals = [Proposal]()
     public var proposalContent = [String: String]()
+    public var proposalsExpiration = Date()
+    public var proposalContentExpirations = [String: Date]()
     
     public init() {
         // All web apps need a Router instance to define routes

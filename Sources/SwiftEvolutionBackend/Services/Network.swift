@@ -3,6 +3,7 @@ import Foundation
 struct Service {
 
     public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: [Proposal]?) -> Swift.Void
+    public typealias CompletionProposalHandler = (_ error: Error?, _ proposalText: String?) -> Swift.Void
     
     /**
      Request all proposals from Swift Evolution from data.swift.org
@@ -31,7 +32,7 @@ struct Service {
 
     }
     
-    static func getProposalText(_ proposalLink: String, handler: @escaping (_ error: Error?, _ proposalText: String?) -> Swift.Void) {
+    static func getProposalText(_ proposalLink: String, handler: @escaping CompletionProposalHandler) {
         
         let session = URLSession(configuration: .default)
         
@@ -43,7 +44,6 @@ struct Service {
                     handler(error, nil)
                     return
                 }
-                print("TEXT: \(proposalText)")
                 handler(nil, proposalText)
             }
             datatask.resume()

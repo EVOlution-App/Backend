@@ -28,15 +28,17 @@ extension Controller {
                                      context: proposal.serialize())
 
             // Cache proposal content
-            if self.proposalContent[proposal.markdownLink] == nil {
+            let createdDate = self.proposalContentExpirations[proposal.markdownLink]
+            if self.proposalContent[proposal.markdownLink] == nil || (createdDate != nil && createdDate!.isExpired(Config.shared.cacheTimeout)) {
 
                 Service.getProposalText(proposal.markdownLink) { [unowned response, next] (error, proposalText) in
-                    
+
                     guard let proposalText = proposalText, error == nil else {
                         try? response.status(.internalServerError).end()
                         return
                     }
                     self.proposalContent[proposal.markdownLink] = proposalText
+                    self.proposalContentExpirations[proposal.markdownLink] = Date()
                     next()
                 }
             } else {
@@ -44,18 +46,18 @@ extension Controller {
             }
             
         }
-        
+
         // Use cached proposals if available
-        if self.proposals.count > 0 {
+        if self.proposals.count > 0 && !self.proposalsExpiration.isExpired(Config.shared.cacheTimeout) {
             findProposal(response, next)
         } else {
-        
             Service.getProposals { [unowned response, next] (error, proposals) in
                 guard let proposals = proposals, error == nil else {
                     try? response.status(.internalServerError).end()
                     return
                 }
                 self.proposals = proposals
+                self.proposalsExpiration = Date()
                 findProposal(response, next)
             }
         }
