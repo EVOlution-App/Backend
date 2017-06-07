@@ -2,12 +2,12 @@
 import Foundation
 
 public struct ProposalCache {
-    var proposals: [Proposal]
-    var rawData: Data
-    var expiration: Date
+    var proposals: [Proposal] = [Proposal]()
+    var rawData: Data = Data()
+    var expiration: Date = Date()
 }
 
-public struct ProposalContentCache {
+public struct ProposalContent {
     var content: String
     var expiration: Date
 }

@@ -10,8 +10,10 @@ import KituraStencil
 public class Controller {
     public let router: Router
     
-    public var proposalCache = ProposalCache(proposals: [], rawData: Data(), expiration: Date())
-    public var proposalContent = [String: ProposalContentCache]()
+    public var proposalCache = ProposalCache()
+    public var proposalContentCache = [String: ProposalContent]()
+    let proposalCacheSemaphore = DispatchSemaphore(value: 1)
+    let proposalContentCacheSemaphore = DispatchSemaphore(value: 1)
     
     public init() {
         // All web apps need a Router instance to define routes
