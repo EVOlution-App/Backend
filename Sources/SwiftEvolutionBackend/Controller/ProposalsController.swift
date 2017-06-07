@@ -5,6 +5,8 @@ import LoggerAPI
 import KituraStencil
 import Dispatch
 
+import SwiftyJSON
+
 extension Controller {
     
     // MARK: Get proposal
@@ -18,7 +20,7 @@ extension Controller {
         }
         
         // Ensure we have proposal data and render a specific proposal
-        processProposals(proposalID, response: response) { 
+        processProposals(response: response) {
             self.renderProposal(proposalID, response: response, next: next)
         }
     }
@@ -45,7 +47,7 @@ extension Controller {
         }
         
         // Ensure we have proposal data and responsd with specific proposal markdown
-        processProposals(proposalID, response: response) { 
+        processProposals(response: response) {
             self.findProposal(proposalID, response: response, next: next)
         }
     }
@@ -80,9 +82,20 @@ extension Controller {
         }
     }
     
+    // MARK: Get all proposals
+    
+    func getProposals(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        Log.debug("GET - /proposals route handler...")
+        
+        processProposals(response: response) {
+            let json = JSON(data: self.proposalCache.rawData)
+            response.status(.OK).send(json: json)
+        }
+    }
+    
     // MARK: Proposal processing utilities
     
-    private func processProposals(_ proposalID: String, response: RouterResponse, callback: @escaping () -> Void) {
+    private func processProposals(response: RouterResponse, callback: @escaping () -> Void) {
         let semaphore = DispatchSemaphore(value: 1)
         semaphore.wait()
         
@@ -90,14 +103,14 @@ extension Controller {
             semaphore.signal()
             callback()
         } else {
-            Service.getProposals { [unowned self, unowned response] (error, proposals) in
-                guard let proposals = proposals, error == nil else {
+            Service.getProposals { [unowned self, unowned response] (error, data) in
+                guard let data = data, let proposals = data.proposals(), error == nil else {
                     try? response.status(.internalServerError).end()
                     semaphore.signal()
                     return
                 }
-                self.proposalCache.proposals = proposals
-                self.proposalCache.expiration = Date()
+                let latestCache = ProposalCache(proposals: proposals, rawData: data, expiration: Date())
+                self.proposalCache = latestCache
                 semaphore.signal()
                 callback()
             }

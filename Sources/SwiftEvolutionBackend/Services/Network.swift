@@ -2,7 +2,7 @@ import Foundation
 
 class Service {
 
-    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: [Proposal]?) -> Void
+    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: Data?) -> Void
     public typealias CompletionProposalHandler = (_ error: Error?, _ proposalText: String?) -> Void
     
     /**
@@ -17,14 +17,13 @@ class Service {
             let datatask = session.dataTask(with: url) { (data, _, error) in
                 guard
                     let data = data,
-                    let proposals = data.proposals(),
                     error == nil
                     else {
                         handler(error, nil)
                         return
                 }
 
-                handler(nil, proposals)
+                handler(nil, data)
             }
                 
             datatask.resume()

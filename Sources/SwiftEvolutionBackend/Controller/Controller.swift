@@ -10,7 +10,7 @@ import KituraStencil
 public class Controller {
     public let router: Router
     
-    public var proposalCache = ProposalCache(proposals: [], expiration: Date())
+    public var proposalCache = ProposalCache(proposals: [], rawData: Data(), expiration: Date())
     public var proposalContent = [String: ProposalContentCache]()
     
     public init() {
@@ -32,8 +32,9 @@ public class Controller {
         
         // MARK: /share/proposalContent/:id
         router.get("/proposalContent/:id", handler: getProposalContent)
+        
         // MARK: /proposals
-//        router.get("/proposals", handler: )
+        router.get("/proposals", handler: getProposals)
     }
 }
 
