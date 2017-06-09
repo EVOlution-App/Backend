@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 import Kitura
 import SwiftyJSON
 import LoggerAPI

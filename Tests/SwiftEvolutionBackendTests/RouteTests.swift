@@ -35,7 +35,9 @@ class RouteTests: XCTestCase {
   static var allTests : [(String, (RouteTests) -> () throws -> Void)] {
     return [
       ("testGetStatic", testGetStatic),
-      ("testGetProposal", testGetProposal)
+      ("testGetAllProposals", testGetAllProposals),
+      ("testGetProposal", testGetProposal),
+      ("testGetProposalMarkdown", testGetProposalMarkdown)
     ]
   }
 
@@ -58,45 +60,82 @@ class RouteTests: XCTestCase {
     super.tearDown()
   }
 
-  func testGetStatic() {
+    func testGetStatic() {
 
-    let printExpectation = expectation(description: "The / route will serve static HTML content.")
+        let printExpectation = expectation(description: "The / route will serve static HTML content.")
 
-    URLRequest(forTestWithMethod: "GET")?
-    .sendForTestingWithKitura { data, statusCode in
-      if let getResult = String(data: data, encoding: String.Encoding.utf8){
-        print("GET to / endpoint returned: ", getResult)
-        XCTAssertEqual(statusCode, 200)
-        XCTAssertTrue(getResult.contains("<html>"))
-        XCTAssertTrue(getResult.contains("</html>"))
-      } else {
-        XCTFail("Return value from / was nil!")
-      }
+        URLRequest(forTestWithMethod: "GET")?
+        .sendForTestingWithKitura { data, statusCode in
+            if let getResult = String(data: data, encoding: String.Encoding.utf8){
+                print("GET to / endpoint returned: ", getResult)
+                XCTAssertEqual(statusCode, 200)
+                XCTAssertTrue(getResult.contains("<html>"))
+                XCTAssertTrue(getResult.contains("</html>"))
+            } else {
+                XCTFail("Return value from / was nil!")
+            }
+            printExpectation.fulfill()
+        }
 
-      printExpectation.fulfill()
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
+    func testGetAllProposals() {
+        
+        let printExpectation = expectation(description: "The /proposals endpoint will return a JSON object to the GET request")
+        
+        URLRequest(forTestWithMethod: "GET", route: "proposals")?
+        .sendForTestingWithKitura { data, statusCode in
+            if let proposals = data.proposals() {
+                XCTAssertEqual(statusCode, 200)
+                XCTAssertGreaterThan(proposals.count, 0)
+                let proposal = proposals[0]
+                XCTAssertEqual(proposal.id, "SE-0001")
+            } else {
+                XCTFail("Return value from /proposals was nil!")
+            }
+            printExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10.0, handler: nil)
     }
 
-    waitForExpectations(timeout: 10.0, handler: nil)
-  }
+    func testGetProposal() {
 
-  func testGetProposal() {
+        let printExpectation = expectation(description: "The /proposal/:id endpoint will return a JSON object to the GET request")
 
-    let printExpectation = expectation(description: "The /share/proposal/:proposal endpoint will return a JSON object to the GET request")
+        URLRequest(forTestWithMethod: "GET", route: "proposal/SE-0001")?
+        .sendForTestingWithKitura { data, statusCode in
+            if let getResult = String(data: data, encoding: String.Encoding.utf8) {
+                XCTAssertEqual(statusCode, 200)
+                XCTAssertTrue(getResult.contains("SE-0001"))
+            } else {
+                XCTFail("Return value from /proposal/:id was nil!")
+            }
+            printExpectation.fulfill()
+        }
 
-    URLRequest(forTestWithMethod: "GET", route: "share/proposal/SE-0001")?
-    .sendForTestingWithKitura { data, statusCode in
-      if let getResult = String(data: data, encoding: String.Encoding.utf8) {
-        print("GET to /share/proposal/:proposal endpoint returned: ", getResult)
-        XCTAssertEqual(statusCode, 200)
-        XCTAssertTrue(getResult.contains("SE-0001"))
-      } else {
-        XCTFail("Return value from /share/proposal/:proposal was nil!")
-      }
-      printExpectation.fulfill()
+        waitForExpectations(timeout: 10.0, handler: nil)
     }
-
-    waitForExpectations(timeout: 10.0, handler: nil)
-  }
+    
+    func testGetProposalMarkdown() {
+        
+        let printExpectation = expectation(description: "The /proposal/:id/markdown endpoint will return a JSON object to the GET request")
+        
+        URLRequest(forTestWithMethod: "GET", route: "proposal/SE-0001/markdown")?
+            .sendForTestingWithKitura { data, statusCode in
+            if let getResult = String(data: data, encoding: String.Encoding.utf8) {
+                print("GET to /proposal/:id/markdown endpoint returned: ", getResult)
+                XCTAssertEqual(statusCode, 200)
+                XCTAssertTrue(getResult.contains("SE-0001"))
+            } else {
+                XCTFail("Return value from /proposal/:id/markdown was nil!")
+            }
+            printExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
 }
 
 
