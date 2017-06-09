@@ -33,7 +33,7 @@ public class Controller {
         router.get("/proposal/:id", handler: getProposal)
         
         // MARK: /share/proposalContent/:id
-        router.get("/proposalContent/:id", handler: getProposalContent)
+        router.get("/proposal/:id/markdown", handler: getProposalMarkdown)
         
         // MARK: /proposals
         router.get("/proposals", handler: getProposals)

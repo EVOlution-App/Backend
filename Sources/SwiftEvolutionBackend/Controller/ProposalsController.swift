@@ -39,8 +39,8 @@ extension Controller {
     
     // MARK: Get proposal content
     
-    func getProposalContent(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-        Log.debug("GET - /proposalContent/:id route handler...")
+    func getProposalMarkdown(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
+        Log.debug("GET - /proposal/:id/markdown route handler...")
         
         guard let proposalID = request.parameters["id"] else {
             try response.status(.badRequest).end()
@@ -62,10 +62,11 @@ extension Controller {
         // Cache proposal content
         proposalContentCacheSemaphore.wait()
         response.headers.setType("text")
-        let createdDate = self.proposalContentCache[proposal.markdownLink]?.expiration
-        // TODO: remove ! if possible
-        if self.proposalContentCache[proposal.markdownLink]?.content == nil || (createdDate != nil && createdDate!.isExpired(Config.shared.cacheTimeout)) {
-            
+        if let cachedProposal = self.proposalContentCache[proposal.markdownLink], !cachedProposal.expiration.isExpired(Config.shared.cacheTimeout) {
+            proposalContentCacheSemaphore.signal()
+            response.status(HTTPStatusCode.OK).send(cachedProposal.content)
+            next()
+        } else {
             Service.getProposalText(proposal.markdownLink) { [unowned self, unowned response, next] (error, proposalText) in
                 
                 guard let proposalText = proposalText, error == nil else {
@@ -79,16 +80,6 @@ extension Controller {
                 response.status(HTTPStatusCode.OK).send(proposalText)
                 next()
             }
-        } else {
-            if let cachedText = self.proposalContentCache[proposal.markdownLink]?.content {
-                proposalContentCacheSemaphore.signal()
-                response.status(HTTPStatusCode.OK).send(cachedText)
-            } else {
-                // This should never happen, but just in case.
-                proposalContentCacheSemaphore.signal()
-                try? response.status(.internalServerError).end()
-            }
-            next()
         }
     }
     
