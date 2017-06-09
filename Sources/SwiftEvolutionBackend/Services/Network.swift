@@ -1,8 +1,9 @@
 import Foundation
 
-struct Service {
+class Service {
 
-    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: [Proposal]?) -> Swift.Void
+    public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: Data?) -> Void
+    public typealias CompletionProposalHandler = (_ error: Error?, _ proposalText: String?) -> Void
     
     /**
      Request all proposals from Swift Evolution from data.swift.org
@@ -16,18 +17,36 @@ struct Service {
             let datatask = session.dataTask(with: url) { (data, _, error) in
                 guard
                     let data = data,
-                    let proposals = data.proposals(),
                     error == nil
                     else {
                         handler(error, nil)
                         return
                 }
 
-                handler(nil, proposals)
+                handler(nil, data)
             }
                 
             datatask.resume()
         }
 
+    }
+    
+    static func getProposalText(_ proposalLink: String, handler: @escaping CompletionProposalHandler) {
+        
+        let session = URLSession(configuration: .default)
+        
+        if let url = URL(string: proposalLink) {
+            
+            let datatask = session.dataTask(with: url) { (data, _, error) in
+                
+                guard let data = data, let proposalText = data.proposalText(), error == nil else {
+                    handler(error, nil)
+                    return
+                }
+                handler(nil, proposalText)
+            }
+            datatask.resume()
+        }
+        
     }
 }

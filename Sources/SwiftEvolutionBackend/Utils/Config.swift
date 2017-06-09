@@ -32,6 +32,8 @@ public struct Config {
             .load(file: propertiesFile, relativeFrom: .pwd)
             .load(.environmentVariables)
     }
+    
+    public let cacheTimeout: Int = 900 // 15 minutes
 
     public var port: Int {
         return configuration.port

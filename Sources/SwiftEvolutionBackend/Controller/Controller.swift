@@ -10,6 +10,11 @@ import KituraStencil
 public class Controller {
     public let router: Router
     
+    public var proposalCache = ProposalCache()
+    public var proposalContentCache = [String: ProposalContent]()
+    let proposalCacheSemaphore = DispatchSemaphore(value: 1)
+    let proposalContentCacheSemaphore = DispatchSemaphore(value: 1)
+    
     public init() {
         // All web apps need a Router instance to define routes
         router = Router()
@@ -24,8 +29,14 @@ public class Controller {
         // MARK: /
         router.get("/", handler: getLandingPage)
         
-        // MARK: /share/proposal/:proposal
-        router.get("/share/proposal/:proposal", handler: getProposal)
+        // MARK: /share/proposal/:id
+        router.get("/proposal/:id", handler: getProposal)
+        
+        // MARK: /share/proposalContent/:id
+        router.get("/proposal/:id/markdown", handler: getProposalMarkdown)
+        
+        // MARK: /proposals
+        router.get("/proposals", handler: getProposals)
     }
 }
 
