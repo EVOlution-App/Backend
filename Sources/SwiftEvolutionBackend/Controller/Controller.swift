@@ -31,7 +31,8 @@ public class Controller {
         router.get("/", handler: getLandingPage)
         
         // MARK: /share/proposal/:id
-        router.get("/proposal/:id", handler: getProposal)
+        router.get("/share/proposal/:id", handler: getProposal)
+        router.get("/proposal/:id", handler: getProposal) // this endpoint is part of the new backend
         
         // MARK: /share/proposalContent/:id
         router.get("/proposal/:id/markdown", handler: getProposalMarkdown)
