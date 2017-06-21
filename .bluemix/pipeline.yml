@@ -1,0 +1,71 @@
+stages:
+- name: Dev Build Stage
+  inputs:
+  - type: git
+    branch: develop
+    service: ${REPO}
+  triggers:
+    - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    artifact_dir: ''
+- name: Dev Deploy Stage
+  inputs:
+  - type: job
+    stage: Dev Build Stage
+    job: Build
+  triggers:
+  - type: stage
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${CF_REGION_ID}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+    script: |-
+      #!/bin/bash
+      # Create any services that are required
+      # cf create-service "cloudantNoSQLDB" "Lite" "Cloudant NoSQL DB-w8"
+      # TODO: Blue-green deployment here...
+      cf push "${CF_APP}"
+      # cf logs "${CF_APP}" --recent
+- name: Prod Build Stage
+  inputs:
+  - type: git
+    # TODO: For a prod build/deploy, we should use the master branch
+    #branch: master
+    branch: develop
+    service: ${REPO}
+  triggers:
+    - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    artifact_dir: ''
+- name: Prod Deploy Stage
+  inputs:
+  - type: job
+    stage: Prod Build Stage
+    job: Build
+  triggers:
+  - type: stage
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      # TODO: Update org/space
+      region_id: ${CF_REGION_ID}
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
+      application: ${CF_APP}
+    script: |-
+      #!/bin/bash
+      # Create any services that are required
+      # cf create-service "cloudantNoSQLDB" "Lite" "Cloudant NoSQL DB-w8"
+      # TODO: Blue-green deployment here...
+      # TODO: Enabled push once we have congfigured the space correctly.
+      # cf push "${CF_APP}"
+      # cf logs "${CF_APP}" --recent
