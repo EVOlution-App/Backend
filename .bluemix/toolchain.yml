@@ -34,11 +34,11 @@ build:
     services: ["repo"]
   hidden: ["form"]
 
-# Web IDE
+#Web IDE
 webide:
   service_id: orion
 
-# Deployment
+#Deployment
 deploy:
   schema:
     $ref: deploy.json
