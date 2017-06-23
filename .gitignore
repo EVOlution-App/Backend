@@ -1,3 +1,4 @@
 .build/*
+.build-ubuntu/*
 *.xcodeproj/*
 .DS_Store

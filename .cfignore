@@ -1,4 +1,5 @@
 .build/*
+.build-ubuntu/*
 docker-compose.yml
 *.xcodeproj/*
 .travis.yml
