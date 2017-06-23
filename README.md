@@ -1,3 +1,4 @@
+[![Build Status - Master](https://travis-ci.org/unnamedd/swift-evolution-backend.svg?branch=develop)](https://travis-ci.org/unnamedd/swift-evolution-backend)
 ![macOS](https://img.shields.io/badge/os-macOS-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 
