@@ -4,7 +4,7 @@
 
 # Swift Evolution - Backend
 
-This repository contains the backend for frontend (BFF) component that supports the iOS [Evolution](https://itunes.apple.com/us/app/evolution-app/id1210898168?mt=8) app. This BFF component is written in the [Swift](https://swift.org/) programming language and leverages the [Kitura](http://www.kitura.io/) web framework from **IBM**.
+This repository contains the backend for frontend (BFF) component that supports the iOS [Evolution](https://itunes.apple.com/us/app/evolution-app/id1210898168?mt=8) app, a simple app to help you follow the [proposals from Swift evolution](https://apple.github.io/swift-evolution/) on your iOS device. This BFF component is written in the [Swift](https://swift.org/) programming language and leverages the [Kitura](http://www.kitura.io/) web framework from **IBM**.
 
 Please note that this BFF component is still undergoing development; we are currently working on the deliverables for a first release. Stay tuned for updates!
 
