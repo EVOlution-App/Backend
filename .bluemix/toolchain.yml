@@ -44,4 +44,4 @@ deploy:
     $ref: deploy.json
   service-category: pipeline
   parameters:
-    app-name: swift-evolution-bff
+    app-name: swift-evolution-backend
