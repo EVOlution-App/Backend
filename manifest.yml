@@ -1,5 +1,5 @@
 applications:
-- name: swift-evolution-backend
+- name: swift-evolution-bff
   memory: 512M
   instances: 1
   random-route: true

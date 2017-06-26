@@ -6,7 +6,7 @@ required:
  - repo
 
 toolchain:
-  name: swift-evolution
+  name: swift-evolution-toolchain
 
 # Github repos
 repo:
@@ -34,14 +34,14 @@ build:
     services: ["repo"]
   hidden: ["form"]
 
-#Web IDE
+# Web IDE
 webide:
   service_id: orion
 
-#Deployment
+# Deployment
 deploy:
   schema:
     $ref: deploy.json
   service-category: pipeline
   parameters:
-    app-name: swift-evolution
+    app-name: swift-evolution-bff
