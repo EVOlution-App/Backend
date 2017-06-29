@@ -28,7 +28,6 @@ stages:
     script: |-
       #!/bin/bash
       # Create any services that are required
-      # cf create-service "cloudantNoSQLDB" "Lite" "Cloudant NoSQL DB-w8"
+      cf create-service "Auto-Scaling" "free" "swift-evolution-auto-scaling"
       # TODO: Add blue-green deployment...
       cf push "${CF_APP}"
-      # cf logs "${CF_APP}" --recent
