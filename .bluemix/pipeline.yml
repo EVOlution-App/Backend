@@ -63,7 +63,7 @@ stages:
         cf unmap-route $CF_APP_TMP mybluemix.net --hostname $tmp_route
 
         # Deprovision old version of app
-        cf delete -r $CF_APP
+        cf delete -f -r $CF_APP
 
         # Rename tmp app
         cf rename $CF_APP_TMP $CF_APP
