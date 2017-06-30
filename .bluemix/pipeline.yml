@@ -108,7 +108,7 @@ stages:
 
         # Get tmp url for new app update
         tmp_urls=$(get_urls $CF_APP_TMP)
-        echo "Temporary urls: $tmp_urls"
+        echo "Temporary URLs: $tmp_urls"
 
         # Update routes for updated and previous app
         IFS=',' read -ra paths <<< "$urls"
