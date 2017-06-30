@@ -43,10 +43,12 @@ stages:
       }
 
       # Provision application
-      if ! cf app $CF_APP; then
+      if ! cf app $CF_APP > /dev/null 2>&1; then
+        echo "Starting new app deployment..."
         cf push $CF_APP
       else
         # Push new version of the app
+        echo "Starting app update deployment..."
         CF_APP_TMP="${CF_APP}-tmp"
         cf push $CF_APP_TMP --random-route
 
