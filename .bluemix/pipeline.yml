@@ -32,6 +32,7 @@ stages:
       cf create-service "Auto-Scaling" "free" "swift-evolution-auto-scaling"
 
       # Get route for app
+      # urls: swift-evolution-backend-mispublished-halituosity.mybluemix.net, data.swift-evolution.io, www.swift-evolution.io, swift-evolution.mybluemix.net, swift-evolution.io
       get_route() {
         APP_NAME=$1
         #url=$(cf app $APP_NAME | grep routes:)
@@ -58,9 +59,13 @@ stages:
         echo "Original route: $route"
 
         # Update routes
-        cf map-route $CF_APP_TMP mybluemix.net --hostname $route
-        cf unmap-route $CF_APP mybluemix.net --hostname $route
-        cf unmap-route $CF_APP_TMP mybluemix.net --hostname $tmp_route
+        if [[ ! -z $route ]]; then
+          cf map-route $CF_APP_TMP mybluemix.net --hostname $route
+          cf unmap-route $CF_APP mybluemix.net --hostname $route
+        fi
+        if [[ ! -z $tmp_route ]]; then
+          cf unmap-route $CF_APP_TMP mybluemix.net --hostname $tmp_route
+        fi
 
         # Deprovision old version of app
         cf delete -f -r $CF_APP
