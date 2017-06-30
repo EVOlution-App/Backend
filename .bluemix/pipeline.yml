@@ -33,8 +33,10 @@ stages:
 
       get_urls() {
         APP_NAME=$1
-        urls=$(cf app $APP_NAME | grep routes:)
-        urls=${urls#routes: }
+        local urls_key="urls"
+        #local urls_key="routes"
+        urls=$(cf app $APP_NAME | grep $urls_key:)
+        urls=${urls#${urls_key}: }
         urls=${urls//[[:blank:]]/}
         echo $urls
       }
