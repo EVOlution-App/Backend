@@ -35,8 +35,6 @@ stages:
       # urls: swift-evolution-backend-mispublished-halituosity.mybluemix.net, data.swift-evolution.io, www.swift-evolution.io, swift-evolution.mybluemix.net, swift-evolution.io
       get_route() {
         APP_NAME=$1
-        #url=$(cf app $APP_NAME | grep routes:)
-        #url=${url#routes: }
         url=$(cf app $APP_NAME | grep urls:)
         url=${url#urls: }
         url=${url//[[:blank:]]/}
@@ -49,7 +47,7 @@ stages:
         cf push $CF_APP
       else
         # Push new version of the app
-        CF_APP_TMP="${CF_APP}_tmp"
+        CF_APP_TMP="${CF_APP}-tmp"
         cf push $CF_APP_TMP --random-route
 
         # Get route for currently running app
@@ -62,6 +60,8 @@ stages:
         if [[ ! -z $route ]]; then
           cf map-route $CF_APP_TMP mybluemix.net --hostname $route
           cf unmap-route $CF_APP mybluemix.net --hostname $route
+        else
+          echo "Warning: No new route was assigned to new app deployment."
         fi
         if [[ ! -z $tmp_route ]]; then
           cf unmap-route $CF_APP_TMP mybluemix.net --hostname $tmp_route
