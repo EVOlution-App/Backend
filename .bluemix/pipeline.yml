@@ -34,8 +34,10 @@ stages:
       # Get route for app
       get_route() {
         APP_NAME=$1
-        url=$(cf app $APP_NAME | grep routes:)
-        url=${url#routes: }
+        #url=$(cf app $APP_NAME | grep routes:)
+        #url=${url#routes: }
+        url=$(cf app $APP_NAME | grep urls:)
+        url=${url#urls: }
         url=${url//[[:blank:]]/}
         route=${url%.mybluemix.net}
         echo $route
