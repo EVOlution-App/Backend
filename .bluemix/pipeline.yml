@@ -31,43 +31,111 @@ stages:
       # Create services for app
       cf create-service "Auto-Scaling" "free" "swift-evolution-auto-scaling"
 
-      # Get route for app
-      # urls: swift-evolution-backend-mispublished-halituosity.mybluemix.net, data.swift-evolution.io, www.swift-evolution.io, swift-evolution.mybluemix.net, swift-evolution.io
-      get_route() {
+      get_urls() {
         APP_NAME=$1
-        url=$(cf app $APP_NAME | grep urls:)
-        url=${url#urls: }
-        url=${url//[[:blank:]]/}
-        route=${url%.mybluemix.net}
-        echo $route
+        urls=$(cf app $APP_NAME | grep routes:)
+        urls=${urls#routes: }
+        urls=${urls//[[:blank:]]/}
+        echo $urls
+      }
+
+      get_domains() {
+        realms=$(cf domains | grep 'owned\|shared' | cut -d' ' -f1)
+        realms=$(echo "$realms" | tr '\n' ' ')
+        realms=${realms// /,}
+        realms=$(echo $realms | rev | cut -c 2- | rev)
+        echo $realms
+      }
+
+      get_url_prefixes() {
+        paths=$1
+        realms=$2
+        prefixes=""
+        IFS=',' read -ra urls <<< "$paths"
+        IFS=',' read -ra domains <<< "$realms"
+        for url in "${urls[@]}"; do
+          for domain in "${domains[@]}"; do
+            url=${url%.${domain}}
+            if [ $url = $domain ]; then
+              url=""
+            fi
+          done
+          if [[ -z $prefixes ]]; then
+            prefixes=$url
+          else
+            prefixes="$prefixes,$url"
+          fi
+        done
+        echo $prefixes
+      }
+
+      parse_url() {
+        url=$1
+        realms=$2
+        IFS=',' read -ra domains <<< "$realms"
+        for domain in "${domains[@]}"; do
+          prefix=${url%.${domain}}
+          if [ $prefix != $url ]; then
+            echo "$prefix $domain"
+            break
+          elif [ $prefix = $domain ]; then
+            echo $domain
+            break
+          fi
+        done
+        echo ""
       }
 
       # Provision application
       if ! cf app $CF_APP > /dev/null 2>&1; then
         echo "Starting new app deployment..."
         cf push $CF_APP
+        # Map additional routes as needed here...
+        # domains=swift-evolution.io,mybluemix.net
+        # data.swift-evolution.io,www.swift-evolution.io,swift-evolution.mybluemix.net,swift-evolution.io
       else
         # Push new version of the app
         echo "Starting app update deployment..."
         CF_APP_TMP="${CF_APP}-tmp"
         cf push $CF_APP_TMP --random-route
 
-        # Get route for currently running app
-        tmp_route=$(get_route $CF_APP_TMP)
-        echo "Temporary route: $tmp_route"
-        route=$(get_route $CF_APP)
-        echo "Original route: $route"
+        urls=$(get_urls $CF_APP)
+        echo "App URLs: $urls"
+        domains=$(get_domains)
+        echo "Domains: $domains"
 
-        # Update routes
-        if [[ ! -z $route ]]; then
-          cf map-route $CF_APP_TMP mybluemix.net --hostname $route
-          cf unmap-route $CF_APP mybluemix.net --hostname $route
-        else
-          echo "Warning: No new route was assigned to new app deployment."
-        fi
-        if [[ ! -z $tmp_route ]]; then
-          cf unmap-route $CF_APP_TMP mybluemix.net --hostname $tmp_route
-        fi
+        # Get tmp url for new app update
+        tmp_urls=$(get_urls $CF_APP_TMP)
+        echo "Temporary urls: $tmp_urls"
+
+        # Update routes for updated and previous app
+        IFS=',' read -ra paths <<< "$urls"
+        for url in "${paths[@]}"; do
+          parsed_url=$(parse_url $url $domains)
+          echo "Parsed URL: $parsed_url"
+          IFS=' ' read -ra items <<< "$parsed_url"
+          if [ ${#items[@]} -eq 1 ]; then
+            echo "No prefix found in URL."
+            cf map-route $CF_APP_TMP ${items[0]} --hostname ""
+            cf unmap-route $CF_APP ${items[0]} --hostname ""
+          else
+            cf map-route $CF_APP_TMP ${items[1]} --hostname ${items[0]}
+            cf unmap-route $CF_APP ${items[1]} --hostname ${items[0]}
+          fi
+        done
+
+        IFS=',' read -ra paths <<< "$tmp_urls"
+        for url in "${paths[@]}"; do
+          parsed_url=$(parse_url $url $domains)
+          echo "Parsed tmp URL: $parsed_url"
+          IFS=' ' read -ra items <<< "$parsed_url"
+          if [ ${#items[@]} -eq 1 ]; then
+            echo "No prefix found in tmp URL."
+            cf unmap-route $CF_APP_TMP ${items[1]} --hostname ""
+          else
+            cf unmap-route $CF_APP_TMP ${items[1]} --hostname ${items[0]}
+          fi
+        done
 
         # Deprovision old version of app
         cf delete -f -r $CF_APP
