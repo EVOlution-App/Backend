@@ -27,7 +27,38 @@ stages:
       application: ${CF_APP}
     script: |-
       #!/bin/bash
-      # Create any services that are required
+
+      # Create services for app
       cf create-service "Auto-Scaling" "free" "swift-evolution-auto-scaling"
-      # TODO: Add blue-green deployment...
-      cf push "${CF_APP}"
+
+      # Get route for app
+      get_route() {
+        APP_NAME=$1
+        url=$(cf app $APP_NAME | grep routes:)
+        url=${url#routes: }
+        url=${url//[[:blank:]]/}
+        route=${url%.mybluemix.net}
+        echo $route
+      }
+
+      # Provision application
+      if ! cf app $CF_APP; then
+        cf push $CF_APP
+      else
+        # Push new version of the app
+        CF_APP_TMP="${CF_APP}_TMP"
+        cf push $CF_APP_TMP --random-route
+
+        # Get route for currently running app
+        tmp_route=$(get_route $CF_APP_TMP)
+        route=$(get_route $CF_APP)
+        cf map-route $CF_APP_TMP mybluemix.net -n $route
+        cf unmap-route $CF_APP mybluemix.net -n $route
+        cf unmap-route $CF_APP_TMP mybluemix.net -n $tmp_route
+
+        # Deprovision old version of app
+        cf delete -r $CF_APP
+
+        # Rename tmp app
+        cf rename $CF_APP_TMP $CF_APP
+      fi
