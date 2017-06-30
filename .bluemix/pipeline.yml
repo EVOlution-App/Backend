@@ -46,7 +46,7 @@ stages:
         cf push $CF_APP
       else
         # Push new version of the app
-        CF_APP_TMP="${CF_APP}_TMP"
+        CF_APP_TMP="${CF_APP}_tmp"
         cf push $CF_APP_TMP --random-route
 
         # Get route for currently running app
