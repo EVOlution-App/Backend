@@ -39,7 +39,7 @@ $ swift package generate-xcodeproj
 
 ## Bluemix toolchain
 
-It will be possible soon to deploy this BFF component to Bluemix using a Bluemix Toolchain (**work in progress**). Any required services will be automatically provisioned, once, during toolchain creation.
+This BFF component can be deployed to the IBM Cloud using a Bluemix Toolchain. Any required services will be automatically provisioned, once, during the deployment stage.
 
 [![Create Toolchain](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy/)
 
