@@ -1,7 +1,7 @@
 import Foundation
 
 extension String {
-    
+
     /**
      Trim left and right string to white spaces and new lines
      

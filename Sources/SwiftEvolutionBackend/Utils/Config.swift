@@ -5,7 +5,7 @@ import Configuration
  Constant settings to use throughout the application
  */
 public struct Config {
-    
+
     /// Enum containing all json path keys for properties file
     private enum Keys: String {
         case resourceTemplates = "serverResources:templates"
@@ -32,7 +32,7 @@ public struct Config {
             .load(file: propertiesFile, relativeFrom: .pwd)
             .load(.environmentVariables)
     }
-    
+
     public let cacheTimeout: Int = 900 // 15 minutes
 
     public var port: Int {
@@ -42,9 +42,9 @@ public struct Config {
     public var url: String {
         return configuration.url
     }
-    
+
     // MARK: Templating Values
-    
+
     var resourceTemplates: String {
         return configuration[Keys.resourceTemplates.rawValue] as? String ?? "./Resources/Templates/"
     }
@@ -57,9 +57,9 @@ public struct Config {
     var templateShareProposal: String {
         return configuration[Keys.templateShareProposal.rawValue] as? String ?? "share_index.stencil"
     }
-    
+
     // MARK: URL and Link Reference Values
-    
+
     var rawProposalsBaseURL: String {
         return configuration[Keys.rawProposalsBaseURL.rawValue] as? String ?? "https://data.swift.org/swift-evolution/proposals"
     }
@@ -79,14 +79,14 @@ public struct Config {
         let base = configuration[Keys.profileDeepLink.rawValue] as? String ?? "evo://username/"
         return base + username
     }
-    
+
     // MARK: Common Utility Values
-    
+
     var proposalRegex: String {
         return configuration[Keys.proposalRegex.rawValue] as? String ?? "SE-([0-9]+)"
     }
     var bugRegex: String {
         return configuration[Keys.bugRegex.rawValue] as? String ?? "SR-([0-9]+)"
     }
-    
+
 }
