@@ -5,13 +5,15 @@ class Service {
     public typealias CompletionProposalsHandler = (_ error: Error?, _ proposals: Data?) -> Void
     public typealias CompletionProposalHandler = (_ error: Error?, _ proposalText: String?) -> Void
 
+    static let sharedSession = URLSession(configuration: .default)
+    
     /**
      Request all proposals from Swift Evolution from data.swift.org
      
      - returns: proposals list or nil
      */
     static func getProposals(_ handler: @escaping CompletionProposalsHandler) {
-        let session = URLSession(configuration: .default)
+        let session = Service.sharedSession
 
         if let url = URL(string: Config.shared.rawProposalsBaseURL) {
             let datatask = session.dataTask(with: url) { (data, _, error) in
@@ -33,7 +35,7 @@ class Service {
 
     static func getProposalText(_ proposalLink: String, handler: @escaping CompletionProposalHandler) {
 
-        let session = URLSession(configuration: .default)
+        let session = Service.sharedSession
 
         if let url = URL(string: proposalLink) {
 
