@@ -91,6 +91,7 @@ extension Controller {
         processProposals(response: response) {
             let json = JSON(data: self.proposalCache.rawData)
             response.status(.OK).send(json: json)
+            next()
         }
     }
 
