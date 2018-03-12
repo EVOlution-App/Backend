@@ -1,10 +1,10 @@
-[![Build Status - Master](https://travis-ci.org/unnamedd/swift-evolution-backend.svg?branch=develop)](https://travis-ci.org/unnamedd/swift-evolution-backend)
+[![Build Status - Master](https://travis-ci.org/evolution-app/backend.svg?branch=develop)](https://travis-ci.org/unnamedd/swift-evolution-backend)
 ![macOS](https://img.shields.io/badge/os-macOS-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 
-# Swift Evolution - Backend
+# Evolution App - Backend
 
-This repository contains the backend for frontend (BFF) component that supports the iOS [Evolution](https://itunes.apple.com/us/app/evolution-app/id1210898168?mt=8) app, a simple app to help you follow the [proposals from Swift evolution](https://apple.github.io/swift-evolution/) on your iOS device. This BFF component is written in the [Swift](https://swift.org/) programming language and leverages the [Kitura](http://www.kitura.io/) web framework from **IBM**.
+This repository contains the backend for frontend (BFF) component that supports the [Evolution App - iOS](https://itunes.apple.com/us/app/evolution-app/id1210898168?mt=8), an app to help you to follow [proposals from Swift Evolution](https://apple.github.io/swift-evolution/) on your iOS device. This BFF component is written in the [Swift](https://swift.org/) programming language and leverages the [Kitura](http://www.kitura.io/) web framework from **[IBM](https://github.com/IBM-Swift)**.
 
 Please note that this BFF component is still undergoing development; we are currently working on the deliverables for a first release. Stay tuned for updates!
 
@@ -20,10 +20,9 @@ Please note that this BFF component is still undergoing development; we are curr
 ## Build and run
 
 ```shell
-$ git clone -b develop https://github.com/unnamedd/swift-evolution-backend
-$ cd swift-evolution-backend
-$ swift build
-$ ./.build/debug/Server
+$ git clone -b develop https://github.com/evolution-app/backend
+$ cd backend
+$ swift run
 
 [2017-06-23T14:07:16.626-03:00] [INFO] [main.swift:11 Server] Server will be started on 'http://localhost:8080'.
 [2017-06-23T14:07:16.631-03:00] [INFO] [HTTPServer.swift:104 listen(on:)] Listening on port 8080
@@ -53,4 +52,4 @@ This BFF component can be deployed to the IBM Cloud using a Bluemix Toolchain. A
 
 ## License
 
-**Swift Evolution - Backend** is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+**Evolution App - Backend** is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
