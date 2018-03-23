@@ -26,13 +26,13 @@
             Open proposal {{ id }} on <a href="javascript:void(0);" data-uri="{{ proposal }}" onClick="javascript:clickHandler(this.dataset.uri);">Evolution App</a> or <a href="{{ link }}" data-uri="{{ link }}" target="_blank">Github</a>
             
             <br/><br/>
-            <a href="https://itunes.apple.com/us/app/swift-evolution/id1210898168?ls=1&mt=8" target="_blank">Download Evolution - App from AppStore</a>
+            <a href="https://itunes.apple.com/app/evolution-app/id1210898168" target="_blank">Download Evolution - App from AppStore</a>
         </div> 
     </div>
 {% endblock %}
 
 {% block footer %}
     <div class="footer">
-        Copyright &copy; 2017 <span class="author">Thiago Holanda</span> (<a href="mailto:thiago@swift-evolution.io">thiago@swift-evolution.io</a>).<br/><br/>Swift and the Swift logo are trademarks of Apple Inc., <br/>registered in the U.S. and other countries.
+        Copyright &copy; 2017-present <span class="author">Thiago Holanda</span> (<a href="mailto:thiago@evoapp.io">thiago@evoapp.io</a>).<br/><br/>Swift and the Swift logo are trademarks of Apple Inc., <br/>registered in the U.S. and other countries.
     </div>
 {% endblock %}

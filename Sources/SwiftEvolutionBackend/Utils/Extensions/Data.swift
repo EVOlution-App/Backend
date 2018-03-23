@@ -9,7 +9,7 @@ extension Data {
 
         return list.flatMap { Proposal.init($0.dictionaryValue) }
     }
-    
+
     public func proposalText() -> String? {
         if let content = String(data: self, encoding: .utf8) {
             return content

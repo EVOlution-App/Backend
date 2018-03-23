@@ -1,7 +1,7 @@
 import Foundation
 
 extension Array where Iterator.Element == Proposal {
-    
+
     /// Find proposal using its id
     /// it proposal couldn't be found on list, this function will return **nil**
     /// - parameter id: identification
@@ -11,7 +11,6 @@ extension Array where Iterator.Element == Proposal {
             else {
                 return nil
         }
-        
         return self[index]
     }
 }
