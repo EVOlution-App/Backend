@@ -13,7 +13,7 @@
 {% block body %}
     <div class="message">
         <img class="logo" src="/images/logo-evolution.png"/>
-        <h1><a href="http://app.swift-evolution.io">Evolution App</a></h1>
-        <a class="getintouch" href="mailto:feedback@swift-evolution.io?subject=Feedback%20from%20Evolution%20App">feedback@swift-evolution.io</a>
+        <h1><a href="https://itunes.apple.com/app/evolution-app/id1210898168">Evolution App</a></h1>
+        <a class="getintouch" href="mailto:feedback@evoapp.io?subject=Feedback%20from%20Evolution%20App">feedback@evoapp.io</a>
     </div>
 {% endblock %}
