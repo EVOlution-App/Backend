@@ -36,7 +36,10 @@ public struct Config {
     public let cacheTimeout: Int = 900 // 15 minutes
 
     public var port: Int {
-        return configuration.port
+        let environment = ProcessInfo.processInfo.environment
+        let port = Int(environment["PORT"]) ?? 8080
+
+        return port
     }
 
     public var url: String {
