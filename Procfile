@@ -1,1 +1,1 @@
-web: ./.build/release/Server
+web: Server
