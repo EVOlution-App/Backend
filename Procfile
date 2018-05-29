@@ -1,1 +1,1 @@
-web: App
+web: ./.build/debug/Server
