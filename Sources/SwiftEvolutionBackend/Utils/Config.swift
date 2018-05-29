@@ -38,9 +38,12 @@ public struct Config {
 
     public var port: Int {
         let environment = ProcessInfo.processInfo.environment
-        let port = Int(environment["PORT"]) ?? 8080
+        
+        guard let port = environment["PORT"] else {
+            return 8080
+        }
 
-        return port
+        return Int(port)
     }
 
     public var url: String {
