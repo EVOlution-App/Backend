@@ -1,7 +1,7 @@
 {% extends "base.stencil" %}
 
 {% block head %}
-    <title>Evolution - Proposal - {{ title }}</title>
+    <title>Evolution App - Proposal - {{ title }}</title>
 
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-itunes-app" content="app-id=1210898168, app-argument={{ proposal }}">

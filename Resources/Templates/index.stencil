@@ -1,7 +1,7 @@
 {% extends "base.stencil" %}
 
 {% block head %}
-	<title>Swift Evolution</title>
+	<title>EVOlution App</title>
     
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700,300" rel="stylesheet">
 	<link rel="stylesheet" href="/styles/app.css">
